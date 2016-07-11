@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="卫星地图" android:id="@+id/menu_site"/>
+    <item android:title="实时路况(off)" android:id="@+id/menu_traffic"/>
+</menu>
