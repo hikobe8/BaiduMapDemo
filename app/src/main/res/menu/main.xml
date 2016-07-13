@@ -4,4 +4,5 @@
     <item android:title="卫星地图" android:id="@+id/menu_site"/>
     <item android:title="实时路况(off)" android:id="@+id/menu_traffic"/>
     <item android:title="我的位置" android:id="@+id/menu_location"/>
+    <item android:title="地图模式【正常】" android:id="@+id/menu_style"/>
 </menu>

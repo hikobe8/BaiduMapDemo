@@ -5,8 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.support.v7.widget.LinearLayoutCompat;
-import android.view.OrientationEventListener;
+
 
 /**
  * Created by soda on 2016/7/12.

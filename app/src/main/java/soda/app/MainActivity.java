@@ -33,7 +33,13 @@ public class MainActivity extends AppCompatActivity {
     private float mCurrentAccracy;
     private double mCurrentLat;
     private double mCurrentLong;
-
+    private MyLocationConfiguration.LocationMode mCurrentMode;
+    /**
+     * 地图定位的模式
+     */
+    private String[] mStyles = new String[] { "地图模式【正常】", "地图模式【跟随】",
+            "地图模式【罗盘】" };
+    private int mCurrentStyle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +70,8 @@ public class MainActivity extends AppCompatActivity {
                 // 设置定位数据
                 mBaiduMap.setMyLocationData(locData);
                 //创建定位光标
-                BitmapDescriptor maker = BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher);
-                MyLocationConfiguration myLocationConfiguration = new MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, maker);
+                BitmapDescriptor maker = BitmapDescriptorFactory.fromResource(R.drawable.navi_map_gps_locked);
+                MyLocationConfiguration myLocationConfiguration = new MyLocationConfiguration(mCurrentMode, true, maker);
                 mBaiduMap.setMyLocationConfigeration(myLocationConfiguration);
             }
         });
@@ -145,8 +151,27 @@ public class MainActivity extends AppCompatActivity {
                 mBaiduMap.setTrafficEnabled(!open);
                 item.setTitle(open?"实时路况(off)":"实时路况(on)");
                 break;
+            case R.id.menu_location:
+                myLocation();
+                break;
+            case R.id.menu_style:
+                mCurrentStyle = (++mCurrentStyle) % mStyles.length;
+                item.setTitle(mStyles[mCurrentStyle]);
+                mCurrentMode = mCurrentStyle == 0 ? MyLocationConfiguration.LocationMode.NORMAL
+                        : mCurrentStyle == 1 ? MyLocationConfiguration.LocationMode.FOLLOWING : MyLocationConfiguration.LocationMode.COMPASS;
+                BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.navi_map_gps_locked);
+                MyLocationConfiguration myLocationConfiguration = new MyLocationConfiguration(mCurrentMode, true, bitmapDescriptor);
+                mBaiduMap.setMyLocationConfigeration(myLocationConfiguration);
+                break;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void myLocation() {
+        LatLng ll = new LatLng(mCurrentLat,
+                mCurrentLong);
+        MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
+        mBaiduMap.animateMapStatus(u);
     }
 
     class MLocationListener implements BDLocationListener{
@@ -168,8 +193,8 @@ public class MainActivity extends AppCompatActivity {
             // 设置定位数据
             mBaiduMap.setMyLocationData(locData);
             //创建定位光标
-            BitmapDescriptor maker = BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher);
-            MyLocationConfiguration myLocationConfiguration = new MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, maker);
+            BitmapDescriptor maker = BitmapDescriptorFactory.fromResource(R.drawable.navi_map_gps_locked);
+            MyLocationConfiguration myLocationConfiguration = new MyLocationConfiguration(mCurrentMode, true, maker);
             mBaiduMap.setMyLocationConfigeration(myLocationConfiguration);
             if (isFirstLocation) {
                 isFirstLocation = false;
